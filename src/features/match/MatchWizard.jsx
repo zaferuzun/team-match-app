@@ -11,30 +11,12 @@ export const MatchWizard = ({ onComplete }) => {
   switch (wizard.step) {
     case 1:
       return <Step1PersonCount onSelect={(num) => { wizard.setPlayerCount(num); wizard.nextStep(); }} />;
-    
     case 2:
       return <Step2MethodSelection onMethodSelect={(m) => { wizard.setMethod(m); wizard.nextStep(); }} onBack={wizard.prevStep} />;
-    
     case 3:
-      return (
-        <Step3InputForm 
-          method={wizard.method} 
-          playerCount={wizard.playerCount} 
-          onBack={wizard.prevStep} 
-          onConfirmRandom={wizard.generateRandomTeams}
-          onConfirmReady={wizard.finalizeTeams}
-        />
-      );
-    
+      return <Step3InputForm method={wizard.method} playerCount={wizard.playerCount} onBack={wizard.prevStep} onConfirmRandom={wizard.generateRandomTeams} onConfirmReady={wizard.finalizeTeams} />;
     case 4:
-      return (
-        <Step4Arena 
-          teams={wizard.teams} 
-          onConfirm={(red, blue) => onComplete(red, blue)} // App.jsx'e veriyi gönderir
-          onBack={wizard.prevStep} // 3. adıma geri döner
-        />
-      );
-    
+      return <Step4Arena teams={wizard.teams} onConfirm={(red, blue) => onComplete(red, blue)} onBack={wizard.prevStep} />;
     default:
       return null;
   }

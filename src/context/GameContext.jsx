@@ -5,9 +5,15 @@ const GameContext = createContext();
 export const GameProvider = ({ children }) => {
   const [gameState, setGameState] = useState({
     teams: { red: [], blue: [] },
-    mainMode: null, // 'Seçimli' veya 'Normal'
-    subMode: null,  // 'Derbi', 'Karma', vb.
-    status: 'setup' // 'setup', 'playing', 'finished'
+    mainMode: null,
+    subMode: null,
+    config: {
+      teamSelectionType: null,
+      sides: { red: '', blue: '' },
+      whiteJerseyOwner: '',
+      stadium: '',
+      duration: null
+    }
   });
 
   const saveTeams = (red, blue) => {
@@ -18,8 +24,12 @@ export const GameProvider = ({ children }) => {
     setGameState(prev => ({ ...prev, mainMode: main, subMode: sub }));
   };
 
+  const saveConfig = (newConfig) => {
+    setGameState(prev => ({ ...prev, config: { ...prev.config, ...newConfig } }));
+  };
+
   return (
-    <GameContext.Provider value={{ gameState, saveTeams, setModes }}>
+    <GameContext.Provider value={{ gameState, saveTeams, setModes, saveConfig }}>
       {children}
     </GameContext.Provider>
   );
