@@ -94,3 +94,30 @@ v1.0 sürümünde yapılan kritik iyileştirmeler:
    ```
 
 ---
+
+
+## 🗺️ v2.0 Roadmap: Maç Asistanı Güncellemesi
+
+Uygulamayı bir araçtan yaşayan bir platforma dönüştürecek olan v2.0 sürümü için planlanan geliştirmeler şunlardır:
+
+### 1. 💾 Veri Kalıcılığı (Persistence Layer)
+- **LocalStorage Entegrasyonu:** Kullanıcı tarayıcıyı kapatsa bile takımlar, oyuncu listesi ve aktif maç ayarları silinmeyecek.
+- **State Hydration:** Uygulama açılışında `Context`, tarayıcı hafızasındaki verilerle otomatik olarak beslenecek.
+
+### 2. ⏱️ Canlı Maç Yönetimi (Live Arena Features)
+- **İnteraktif Skorboard:** Arena sayfasında Red ve Blue takımlar için skor takibi (+/- butonları).
+- **Canlı Geri Sayım:** Seçilen maç süresine (10-15 dk) göre dijital bir geri sayım sayacı.
+- **Maç Durumları:** Maçın "Devam Ediyor", "Devre Arası" veya "Bitti" olarak işaretlenmesi.
+
+### 3. 📱 Paylaşım ve Sosyal Entegrasyon
+- **WhatsApp Paylaşım:** Oluşan eşleşmeyi, mod bilgilerini ve süreyi tek tuşla WhatsApp gruplarına formatlı metin olarak gönderme.
+- **Maç Özeti Görseli:** Takım kadrolarının şık bir görsel (canvas veya screenshot) olarak indirilmesi.
+
+### 4. 🎨 UI/UX Geliştirmeleri
+- **Framer Motion:** Sayfalar arası akışkan geçişler ve butonlar için mikro-etkileşimler.
+- **Toast Notifications:** "Maç kaydedildi", "Takımlar kopyalandı" gibi durumlar için bildirim sistemi.
+- **Sesli Uyarılar:** Süre bittiğinde veya gol atıldığında opsiyonel ses efektleri.
+
+### 5. 📊 İstatistik ve Geçmiş (Analytics)
+- **Match History:** Yapılan son 10 eşleşmenin sonuçlarıyla birlikte listelenmesi.
+- **Oyuncu Form Grafiği:** Hangi oyuncunun hangi takımla daha çok kazandığının takibi.
