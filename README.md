@@ -1,41 +1,20 @@
-Harika bir fikir! Bir projenin **README.md** dosyası, o projenin aynasıdır. Hem senin için bir not defteri hem de başkaları (veya gelecekteki sen) projeye baktığında neyin neden yapıldığını anlamasını sağlayan bir kılavuzdur.
+# ⚽ Team Match Arena (v1.0)
 
-İşte projenin kök dizinine ekleyebileceğin, modern standartlara uygun profesyonel bir **README.md** içeriği:
+Bu uygulama, halı saha maçları, konsol oyunları (FIFA/PES) veya arkadaş grupları için profesyonel maç eşleşmeleri, oyun modları ve maç ayarları organize eden modüler bir React platformudur.
 
----
+## 🚀 Mimari ve Teknoloji Seçimleri
 
-# 🏆 Team Match Application
+Proje, modern yazılım prensipleri (Clean Code, SOLID) dikkate alınarak geliştirilmiştir.
 
-Bu proje, takımlar oluşturmak ve oyuncuları yönetmek için geliştirilmiş, modern React pratiklerini (2025-2026 standartları) içeren modüler bir web uygulamasıdır.
+### 1. **Mimari: Feature-Based (Özellik Tabanlı) Yapı**
+Geleneksel teknik odaklı klasörleme yerine, işlevsellik odaklı bir yapı tercih edilmiştir.
+- **Neden?** Projenin ölçeklenebilirliğini artırır. `match` veya `game-config` ile ilgili bir geliştirme yaparken tüm bileşenler, hook'lar ve alt parçalar aynı klasör altında bulunur.
+- **Dizin Yapısı:** 
+  - `src/features/`: Uygulamanın ana motorlarını (Match, Setup, Config) barındırır.
+  - `src/context/`: Global state (Hafıza) yönetimini sağlar.
+  - `src/constants/`: Tüm metin ve ayarların tek merkezden yönetildiği yerdir.
 
-## 🚀 Kullanılan Teknolojiler ve Yaklaşımlar
-
-Bu projeyi geliştirirken sürdürülebilirlik ve performans odaklı şu teknolojiler tercih edilmiştir:
-
-### 1. **Mimari: Özellik Tabanlı Yapı (Feature-Based Architecture)**
-Proje, geleneksel "dosya tipine göre" (components, hooks vb.) klasörleme yerine **"Özelliğe Göre"** klasörlenmiştir.
-*   **Neden?** Proje büyüdükçe ilgili mantığın (logic), bileşenlerin ve hookların tek bir klasör (`features/`) altında toplanması, kodun bulunabilirliğini ve bakımını kolaylaştırır.
-*   **Örnek:** `features/match` klasörü kendi içinde tüm sihirbaz (wizard) mantığını barındırır.
-
-### 2. **State Yönetimi: Context API**
-Uygulama genelinde (sayfalar arası) paylaşılan veriler için React'in yerleşik **Context API**'sı kullanılmıştır.
-*   **TeamContext:** Oyuncu listesinin eklenmesi, silinmesi ve tüm uygulamada güncel kalmasını sağlar.
-
-### 3. **Logic (Mantık) Ayrımı: Custom Hooks**
-UI (Arayüz) ile mantık birbirinden ayrılmıştır.
-*   **useMatchWizard:** Maç oluşturma algoritması, adım yönetimi (step logic) ve state güncellemeleri bileşenlerden soyutlanarak özel bir hook içerisine taşınmıştır. Bu sayede UI bileşenleri sadece veriyi göstermekle yükümlüdür.
-
-### 4. **Modern Stil: Tailwind CSS v4**
-En güncel CSS motoru olan **Tailwind CSS v4** kullanılmıştır.
-*   **Vite Entegrasyonu:** `@tailwindcss/vite` eklentisi ile en hızlı build performansı sağlanmıştır.
-*   **Modern Yapı:** PostCSS yapılandırması basitleştirilmiş ve `@import "tailwindcss";` direktifi ile modernize edilmiştir.
-
-### 5. **Build Aracı: Vite**
-Geleneksel Webpack yerine modern, esnek ve ışık hızında çalışan **Vite** tercih edilmiştir.
-
----
-
-## 📂 Klasör Yapısı
+  ## 📂 Klasör Yapısı
 
 ```text
 src/
@@ -48,23 +27,70 @@ src/
 └── App.jsx           # Uygulama giriş noktası ve navigasyon
 ```
 
+
+### 2. **State Yönetimi: Context API & Centralized State**
+Uygulama genelinde paylaşılan veriler için React'in yerleşik **Context API**'sı kullanılmıştır.
+- **GameContext:** Oyuncu isimleri, seçilen takımlar, maç modları ve teknik konfigürasyonlar (stadyum, süre, taraf) bu merkezde toplanır.
+- **Avantajı:** "Prop Drilling" (veriyi elden ele geçirme) sorununu ortadan kaldırır.
+
+### 3. **Logic Katmanı: Custom Hooks (Logic vs. UI Separation)**
+Tüm iş mantığı (İşlem sırası, rastgele atamalar, hesaplamalar) UI bileşenlerinden soyutlanmıştır.
+- **useMatchWizard:** Takım oluşturma algoritmalarını yönetir.
+- **useGameConfig:** Taraf seçimi (Yazı-Tura mantığı), stadyum ataması ve süre hesaplamalarını yönetir.
+
+### 4. **Modern UI: Tailwind CSS v4**
+En güncel CSS motoru olan **Tailwind v4** kullanılmıştır.
+- **Vite Entegrasyonu:** `@tailwindcss/vite` eklentisi ile derleme performansı optimize edilmiştir.
+- **Dinamik Tasarım:** Takım renklerine göre (Red/Blue) dinamik border, background ve text sınıfları kullanılmıştır.
+
 ---
 
-## 🛠️ Kurulum ve Çalıştırma
+## 🛠️ Uygulama Akışı (Wizard Logic)
 
-Projeyi yerel bilgisayarınızda çalıştırmak için şu adımları izleyin:
+Uygulama, karmaşık bir süreci yönetilebilir parçalara bölen **Wizard (Sihirbaz)** tasarım kalıbını kullanır:
 
-1. **Paketleri Yükleyin:**
+1.  **Takım Oluşturma (`MatchWizard`):** 
+    - Kişi sayısı seçilir (2, 3, 4).
+    - "Takımım Hazır" (Manuel) veya "Random" (Rastgele) yöntemlerinden biri seçilir.
+    - Dinamik input alanları ile isimler toplanır.
+2.  **Mod Seçimi (`MatchSetupWizard`):**
+    - "Seçimli Maç" veya "Normal Maç" ana kategorileri altından spesifik oyun türleri belirlenir.
+3.  **Maç Ayarları (`GameConfigWizard`):**
+    - Taraf seçimi ve Beyaz Forma hakkı sistem tarafından **otomatik/rastgele** atanır.
+    - Stadyum ve süre (Manuel veya 10-15 dk arası Random) belirlenir.
+4.  **Arena (`LiveArena`):**
+    - Tüm veriler birleştirilir. Takımlar atanan taraflara (SAĞ/SOL) göre dinamik olarak konumlandırılır.
+
+---
+
+## 💎 Önemli Fonksiyonlar ve Refactoring
+
+v1.0 sürümünde yapılan kritik iyileştirmeler:
+
+- **Centralized Constants:** `constants/gameSettings.js` dosyası ile "Magic Strings" kullanımı bitirilmiş, tüm statik veriler tek merkezden yönetilmeye başlanmıştır.
+- **Component Splitting:** Dev bileşenler (`GameConfigWizard` gibi), her bir adımın (`Step`) kendi dosyasına sahip olduğu küçük parçalara bölünmüştür.
+- **Navigation Orchestration:** `App.jsx` içerisinde merkezi bir `switch-case` yapısı (renderPage) kurularak sayfalar arası geçiş mantığı temizlenmiştir.
+- **Conditional Layouts:** `LiveArena` sayfasında CSS `order` özelliği kullanılarak, takımların taraflara göre fiziksel yer değişimi sağlanmıştır.
+
+---
+
+## 📦 Kurulum
+
+1. Depoyu klonlayın:
+   ```bash
+   git clone [repo-url]
+   ```
+2. Bağımlılıkları yükleyin:
    ```bash
    npm install
    ```
-
-2. **Geliştirme Sunucusunu Başlatın:**
+3. Tailwind v4 ve Vite eklentilerini kurun:
+   ```bash
+   npm install tailwindcss @tailwindcss/vite
+   ```
+4. Geliştirme sunucusunu başlatın:
    ```bash
    npm run dev
    ```
-
-3. **Tarayıcıda Açın:**
-   `http://localhost:5173`
 
 ---
