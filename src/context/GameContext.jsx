@@ -1,20 +1,23 @@
 import React, { createContext, useState, useContext } from 'react';
+import { TEAMS } from '../constants/gameSettings';
 
 const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
-  const [gameState, setGameState] = useState({
-    teams: { red: [], blue: [] },
+    const initialState = {
+    teams: { [TEAMS.RED.ID]: [], [TEAMS.BLUE.ID]: [] },
     mainMode: null,
     subMode: null,
     config: {
-      teamSelectionType: null,
-      sides: { red: '', blue: '' },
-      whiteJerseyOwner: '',
-      stadium: '',
-      duration: null
+        teamSelectionType: null,
+        sides: { [TEAMS.RED.ID]: '', [TEAMS.BLUE.ID]: '' },
+        whiteJerseyOwner: '',
+        stadium: '',
+        duration: null
     }
-  });
+    };
+
+  const [gameState, setGameState] = useState(initialState);
 
   const saveTeams = (red, blue) => {
     setGameState(prev => ({ ...prev, teams: { red, blue } }));
