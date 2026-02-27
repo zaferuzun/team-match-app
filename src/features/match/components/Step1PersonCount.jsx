@@ -1,6 +1,6 @@
 export const Step1PersonCount = ({ onSelect }) => (
   <div className="max-w-md mx-auto mt-10 p-8 bg-white rounded-3xl shadow-xl text-center border border-gray-50">
-    <h2 className="text-2xl font-black mb-6 uppercase tracking-tight">Kişi Sayısı</h2>
+    <h2 className="text-2xl font-black mb-6 uppercase tracking-tight">Kişi Sayısıxx</h2>
     <div className="flex justify-center gap-4">
       {[2, 3, 4].map(num => (
         <button 
