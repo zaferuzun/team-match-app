@@ -1,6 +1,7 @@
 # ⚽ Team Match Arena (v1.0)
 
-Bu uygulama, halı saha maçları, konsol oyunları (FIFA/PES) veya arkadaş grupları için profesyonel maç eşleşmeleri, oyun modları ve maç ayarları organize eden modüler bir React platformudur.
+Bu uygulama; halı saha maçları, konsol oyunları (FIFA/PES) veya arkadaş grupları için profesyonel bir eşleşme ve maç yönetim asistanıdır. Kullanıcıların oyuncu listelerini girmesine, dinamik maç modları seçmesine ve maç şartlarını (taraf, stadyum, süre vb.) simüle etmesine olanak tanır.
+🚀 Canlı Demo: [[Canlı Demo Link](https://zaferuzun.github.io/team-match-app/)]
 
 ## 🚀 Mimari ve Teknoloji Seçimleri
 
@@ -94,6 +95,70 @@ v1.0 sürümünde yapılan kritik iyileştirmeler:
    ```
 
 ---
+Tabii, GitHub Pages kullanarak projeni yayına alma adımlarını profesyonel bir teknik dokümantasyon formatında hazırladım. Bu bölümü `README.md` dosyandaki "Kurulum" bölümünün altına veya ayrı bir "Deployment" başlığı olarak ekleyebilirsin.
+
+---
+
+### 🚀 GitHub Pages ile Yayına Alma (Deployment)
+
+Bu projeyi GitHub Pages üzerinde ücretsiz bir şekilde barındırmak için aşağıdaki adımları izleyebilirsiniz:
+
+#### 1. Gerekli Paketi Yükleyin
+Terminalde projenizin ana dizinindeyken `gh-pages` paketini geliştirici bağımlılığı olarak kurun:
+```bash
+npm install gh-pages --save-dev
+```
+
+#### 2. `package.json` Dosyasını Yapılandırın
+Dosyanızın içine aşağıdaki iki eklemeyi yapın:
+
+- **Homepage:** Dosyanın en üst kısmına projenizin yayınlanacağı URL'yi ekleyin:
+```json
+"homepage": "https://kullanici-adin.github.io/depo-adin",
+```
+
+- **Scripts:** `scripts` bölümünün içine `predeploy` ve `deploy` komutlarını ekleyin:
+```json
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+}
+```
+
+#### 3. `vite.config.js` Dosyasını Güncelleyin
+Vite projelerinde GitHub Pages alt klasörleri (repo adı) kullandığı için `base` ayarını eklemelisiniz:
+```javascript
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  base: '/depo-adin/', 
+})
+```
+
+#### 4. Yayına Alın (Deploy)
+Terminalde aşağıdaki komutu çalıştırarak projenizi derleyip GitHub'a gönderin:
+```bash
+npm run deploy
+```
+
+#### 5. GitHub Ayarlarını Kontrol Edin
+- GitHub deponuza gidin.
+- **Settings** > **Pages** sekmesine tıklayın.
+- **Build and deployment** kısmında **Branch**'in `gh-pages` ve klasörün `/(root)` olarak seçildiğinden emin olun.
+- Birkaç dakika içinde siteniz yukarıda belirttiğiniz URL üzerinden erişilebilir olacaktır.
+
+---
+
+### Küçük Notlar:
+*   **kullanici-adin:** GitHub kullanıcı adınız.
+*   **depo-adin:** GitHub'daki projenizin (repository) adı.
+*   **Önemli:** Eğer `npm run deploy` komutundan sonra GitHub'da `gh-pages` adında bir branch oluştuysa işlem başarılı demektir. Siteniz genellikle 1-2 dakika içinde aktif olur.
 
 
 ## 🗺️ v2.0 Roadmap: Maç Asistanı Güncellemesi
