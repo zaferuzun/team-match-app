@@ -1,23 +1,42 @@
 import React, { useState } from 'react';
-import { TeamProvider } from './context/TeamContext';
-import { TeamsPage } from './pages/TeamsPage';
-import { MatchPage } from './pages/MatchPage';
+import { GameProvider, useGame } from './context/GameContext';
+import { MatchWizard } from './features/match/MatchWizard';
+import { MatchSetupWizard } from './features/match-setup/MatchSetupWizard';
+import { LiveArena } from './pages/LiveArena';
 
-function App() {
-  const [currentPage, setCurrentPage] = useState("teams");
+function AppContent() {
+  const [currentPage, setCurrentPage] = useState("teams-init");
+  const { saveTeams } = useGame();
 
   return (
-    <TeamProvider>
-      <div className="min-h-screen bg-gray-100">
-        <nav className="bg-white shadow p-4 mb-6 flex justify-center gap-4">
-          <button onClick={() => setCurrentPage("teams")} className={`px-4 py-2 ${currentPage === 'teams' ? 'font-bold text-blue-600' : ''}`}>Teams</button>
-          <button onClick={() => setCurrentPage("match")} className={`px-4 py-2 ${currentPage === 'match' ? 'font-bold text-blue-600' : ''}`}>Match</button>
-        </nav>
+    <div className="min-h-screen bg-gray-50 py-10">
+      {/* 1. AŞAMA: Takım Kurma */}
+      {currentPage === "teams-init" && (
+        <MatchWizard onComplete={(red, blue) => {
+          saveTeams(red, blue); 
+          setCurrentPage("mode-setup"); // Sayfa değişimi burada gerçekleşir
+        }} />
+      )}
 
-        {currentPage === "teams" ? <TeamsPage /> : <MatchPage />}
-      </div>
-    </TeamProvider>
+      {/* 2. AŞAMA: Mod Seçimi */}
+      {currentPage === "mode-setup" && (
+        <MatchSetupWizard onComplete={() => {
+          setCurrentPage("arena"); 
+        }} />
+      )}
+
+      {/* 3. AŞAMA: Final Arena */}
+      {currentPage === "arena" && (
+        <LiveArena onReset={() => setCurrentPage("teams-init")} />
+      )}
+    </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <GameProvider>
+      <AppContent />
+    </GameProvider>
+  );
+}

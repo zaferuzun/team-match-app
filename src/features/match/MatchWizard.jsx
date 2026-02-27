@@ -5,7 +5,7 @@ import { Step2MethodSelection } from './components/Step2MethodSelection';
 import { Step3InputForm } from './components/Step3InputForm';
 import { Step4Arena } from './components/Step4Arena';
 
-export const MatchWizard = () => {
+export const MatchWizard = ({ onComplete }) => {
   const wizard = useMatchWizard();
 
   switch (wizard.step) {
@@ -27,7 +27,13 @@ export const MatchWizard = () => {
       );
     
     case 4:
-      return <Step4Arena teams={wizard.teams} />;
+      return (
+        <Step4Arena 
+          teams={wizard.teams} 
+          onConfirm={(red, blue) => onComplete(red, blue)} // App.jsx'e veriyi gönderir
+          onBack={wizard.prevStep} // 3. adıma geri döner
+        />
+      );
     
     default:
       return null;
