@@ -1,42 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { RandomInputFields } from './RandomInputFields';
 import { ReadyInputFields } from './ReadyInputFields';
+import { useMatchWizard } from '../hooks/useMatchWizard';
 
 export const Step3InputForm = ({ method, playerCount, onBack, onConfirmRandom, onConfirmReady }) => {
-  // Random Akışı State'i
-  const [names, setNames] = useState(Array(playerCount).fill(""));
-  
-  // Ready Akışı State'i
-  const [red, setRed] = useState([""]);
-  const [blue, setBlue] = useState([""]);
+  const { tempData, handleTempNameChange } = useMatchWizard();
 
-  // 4 Kişi seçildiyse başlangıçta 2-2 ayarla
+  // 1. ADIM: State'leri Context'teki (tempData) verilerle başlatıyoruz.
+  // Eğer Context boşsa playerCount kadar boş dizi oluşturuyoruz.
+  const [names, setNames] = useState(tempData.randomNames);
+  const [red, setRed] = useState(tempData.readyNames.red);
+  const [blue, setBlue] = useState(tempData.readyNames.blue);
+
+  // 2. ADIM: 4 Kişi seçildiğinde 2-2 ayarı (Sadece ilk girişte)
   useEffect(() => {
-    if (method === 'ready' && playerCount === 4) {
-      setRed(["", ""]);
-      setBlue(["", ""]);
-    }
-  }, [method, playerCount]);
+    setNames(tempData.randomNames);
+    setRed(tempData.readyNames.red);
+    setBlue(tempData.readyNames.blue);
+  }, [playerCount, tempData.randomNames, tempData.readyNames]);
 
-  // Yardımcı Fonksiyonlar
-  const handleRandomNameChange = (index, val) => {
+  // --- RANDOM MODU İŞLEMLERİ ---
+  const handleRandomChange = (index, val) => {
     const next = [...names];
     next[index] = val;
-    setNames(next);
+    setNames(next); // Yerel state güncelle (Anlık yazı için)
+    handleTempNameChange('randomNames', next); // Context güncelle (Kalıcılık için)
   };
 
+  // --- READY MODU İŞLEMLERİ ---
   const handleReadyNameUpdate = (team, index, val) => {
     if (team === 'red') {
-      const next = [...red]; next[index] = val; setRed(next);
+      const nextRed = [...red];
+      nextRed[index] = val;
+      setRed(nextRed);
+      handleTempNameChange('readyNames', { red: nextRed, blue });
     } else {
-      const next = [...blue]; next[index] = val; setBlue(next);
+      const nextBlue = [...blue];
+      nextBlue[index] = val;
+      setBlue(nextBlue);
+      handleTempNameChange('readyNames', { red, blue: nextBlue });
     }
   };
 
   const handleAddReadyInput = (team) => {
     if (red.length + blue.length < playerCount) {
-      if (team === 'red') setRed([...red, ""]);
-      else setBlue([...blue, ""]);
+      if (team === 'red') {
+        const nextRed = [...red, ""];
+        setRed(nextRed);
+        handleTempNameChange('readyNames', { red: nextRed, blue });
+      } else {
+        const nextBlue = [...blue, ""];
+        setBlue(nextBlue);
+        handleTempNameChange('readyNames', { red, blue: nextBlue });
+      }
     }
   };
 
@@ -49,7 +65,7 @@ export const Step3InputForm = ({ method, playerCount, onBack, onConfirmRandom, o
       {method === 'random' ? (
         <RandomInputFields 
           names={names} 
-          onNameChange={handleRandomNameChange} 
+          onNameChange={handleRandomChange} 
         />
       ) : (
         <ReadyInputFields 

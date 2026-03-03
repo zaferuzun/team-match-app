@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom'; // 1. Bunu ekle
+import { useGame } from '../../../context/GameContext'; // Context'i ekledik
 
 
 export const useMatchWizard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { gameState, saveTeams, updateTempData, resetAll,setGlobalPlayerCount } = useGame();
 
   // URL'de step varsa onu al, yoksa 1 kabul et
   const initialStep = Number(searchParams.get('step')) || 1;
@@ -31,14 +33,19 @@ export const useMatchWizard = () => {
       if (index % 2 === 0) red.push(name);
       else blue.push(name);
     });
-    setTeams({ red, blue });
+        // YENİLİK: Veriyi yerel state yerine direkt Context'e (Hafızaya) yazıyoruz
+    saveTeams(red, blue);
     nextStep();
   };
 
   // Ready akışı için doğrudan gelen listeleri kaydetme
   const finalizeTeams = (redList, blueList) => {
-    setTeams({ red: redList, blue: blueList });
+    saveTeams(redList, blueList);
     nextStep();
+  };
+    // İsim güncellendiğinde Context'e yaz
+  const handleTempNameChange = (type, value) => {
+    updateTempData(type, value);
   };
 
   // Dışarıdan URL değişirse (Geri tuşu gibi) state'i senkronize et
@@ -48,11 +55,15 @@ export const useMatchWizard = () => {
       setStep(urlStep);
     }
   }, [searchParams]);
-
+  
+    const handlePlayerCountSelect = (count) => {
+    setGlobalPlayerCount(count); // Hafızaya kaydet
+    setStep(2); // İleri git
+  };
   return {
     step, playerCount, setPlayerCount,
     method, setMethod,
-    teams, nextStep, prevStep,
-    generateRandomTeams, finalizeTeams
+    teams: gameState.teams, nextStep, prevStep,
+    generateRandomTeams, finalizeTeams,tempData:gameState.tempData,resetAll,handleTempNameChange,handlePlayerCountSelect
   };
 };

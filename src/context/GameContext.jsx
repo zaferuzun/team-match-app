@@ -8,7 +8,12 @@ const GameContext = createContext();
 const initialState = {
   teams: { [TEAMS.RED.ID]: [], [TEAMS.BLUE.ID]: [] },
   mainMode: null,
+  playerCount: 2,
   subMode: null,
+  tempData: {
+    randomNames: ["", "", "", ""], 
+    readyNames: { red: [""], blue: [""] }
+  },
   config: {
     teamSelectionType: null,
     sides: { [TEAMS.RED.ID]: '', [TEAMS.BLUE.ID]: '' },
@@ -30,6 +35,39 @@ export const GameProvider = ({ children }) => {
       return initialState;
     }
   });
+
+const setGlobalPlayerCount = (count) => {
+  setGameState(prev => {
+    // Yeni sayıya göre temiz bir randomNames dizisi oluştur (Örn: 2 ise ["", ""])
+    const newRandomNames = Array(count).fill("");
+    
+    // ReadyNames için başlangıç (Her takıma en az 1 tane)
+    let newReadyNames = { red: [""], blue: [""] };
+    
+    // Eğer 4 kişi seçildiyse otomatik 2-2 başlat
+    if (count === 4) {
+      newReadyNames = { red: ["", ""], blue: ["", ""] };
+    }
+
+    return {
+      ...prev,
+      playerCount: count,
+      tempData: {
+        ...prev.tempData,
+        randomNames: newRandomNames,
+        readyNames: newReadyNames
+      }
+    };
+  });
+};
+
+    // YENİ: Geçici isimleri kaydetme
+  const updateTempData = (key, value) => {
+    setGameState(prev => ({
+      ...prev,
+      tempData: { ...prev.tempData, [key]: value }
+    }));
+  }
 
   // 2. ADIM: Her State değişiminde LocalStorage'ı güncelle
   useEffect(() => {
@@ -55,7 +93,7 @@ export const GameProvider = ({ children }) => {
   };
 
   return (
-    <GameContext.Provider value={{ gameState, saveTeams, setModes, saveConfig, resetAll }}>
+    <GameContext.Provider value={{ gameState, saveTeams, setModes, saveConfig, resetAll, updateTempData,setGlobalPlayerCount }}>
       {children}
     </GameContext.Provider>
   );
