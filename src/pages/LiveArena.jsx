@@ -2,10 +2,23 @@ import React from 'react';
 import { useGame } from '../context/GameContext';
 import { TEAMS, GAME_CONFIG } from '../constants/gameSettings';
 import { TeamArenaCard } from './components/TeamArenaCard';
+import { useNavigate } from 'react-router-dom';
 
 export const LiveArena = ({ onReset, onReconfigure }) => {
   const { gameState } = useGame();
   const { teams, mainMode, subMode, config } = gameState;
+  const navigate = useNavigate();
+  const { resetAll } = useGame();
+
+
+  const handleNewMatch = () => {
+    resetAll();
+    navigate('/team');
+  };
+
+  const handleReconfigure = () => {
+    navigate('/match/mode')
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-8 mt-10 animate-in fade-in zoom-in duration-500">
@@ -63,13 +76,13 @@ export const LiveArena = ({ onReset, onReconfigure }) => {
       {/* Alt Kontroller */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
         <button 
-          onClick={onReconfigure} 
+          onClick={handleReconfigure} 
           className="py-5 bg-indigo-600 text-white rounded-[2rem] font-black hover:bg-indigo-700 transition-all uppercase tracking-widest shadow-lg active:scale-95"
         >
           🔄 Mod Değiştir
         </button>
         <button 
-          onClick={onReset} 
+          onClick={handleNewMatch} 
           className="py-5 bg-white border-2 border-black rounded-[2rem] font-black hover:bg-black hover:text-white transition-all uppercase tracking-widest shadow-sm active:scale-95"
         >
           🗑️ Yeni Maç

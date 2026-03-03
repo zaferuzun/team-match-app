@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { GAME_CONFIG, TEAMS } from '../../../constants/gameSettings';
+import { useNavigate } from 'react-router-dom'; // 1. useNavigate ekle
+import { useGame } from '../../../context/GameContext'; // Context'i ekle
 
 export const useGameConfig = (onComplete) => {
   const [step, setStep] = useState(1);
   const [localConfig, setLocalConfig] = useState({});
+  const navigate = useNavigate(); // 3. navigate tanımla
+  const { saveConfig } = useGame(); // Context fonksiyonunu al
 
   const next = () => setStep(s => s + 1); // Bu fonksiyonun dışarı verilmesi gerekiyor
 
@@ -35,8 +39,8 @@ const handleTeamSelectType = (type) => {
         finalDuration = Math.floor(Math.random() * (GAME_CONFIG.MAX_DURATION - GAME_CONFIG.MIN_DURATION + 1)) + GAME_CONFIG.MIN_DURATION;
     }
     const finalData = { ...localConfig, duration: finalDuration };
-    setLocalConfig(finalData);
-    onComplete(finalData);
+    saveConfig(finalData); // Önce context'e kaydet
+    navigate('/arena');    // Sonra Arena'ya yönlendir
   };
 
   // BURAYA DİKKAT: 'next' eklendi

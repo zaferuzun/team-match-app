@@ -4,14 +4,16 @@ import { SelectionTypeStep } from './components/SelectionTypeStep';
 import { SideJerseyStep } from './components/SideJerseyStep';
 import { StadiumStep } from './components/StadiumStep';
 import { DurationStep } from './components/DurationStep';
+import { useNavigate } from 'react-router-dom';
 
-export const GameConfigWizard = ({ onComplete, onBack }) => {
-  const { step, handleTeamSelectType, handleStadium, handleDuration, localConfig, setStep, next } = useGameConfig(onComplete);
+export const GameConfigWizard = () => {
+  const { step, handleTeamSelectType, handleStadium, handleDuration, localConfig, setStep, next } = useGameConfig();
+  const navigate = useNavigate();
 
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <SelectionTypeStep onSelect={handleTeamSelectType} onBack={onBack} />;
+        return <SelectionTypeStep onSelect={handleTeamSelectType} onBack={() => navigate('/match/mode')} />;
       
       case 2:
         return <SideJerseyStep config={localConfig} onNext={next} onBack={() => setStep(1)} />;

@@ -1,8 +1,15 @@
 import React from 'react';
 import { useGameSetup } from './hooks/useGameSetup';
+import { useNavigate } from 'react-router-dom';
 
-export const MatchSetupWizard = ({ onComplete, onBack }) => {
+export const MatchSetupWizard = () => {
   const { step, selectedMain, modes, handleMainSelect, handleSubSelect, setStep } = useGameSetup();
+  const navigate = useNavigate();
+
+  // onComplete tetiklendiğinde:
+  const handleComplete = () => {
+    navigate('/match/config')
+  };
 
   return (
     <div className="max-w-md mx-auto p-8 bg-white rounded-[2.5rem] shadow-2xl border border-gray-50">
@@ -12,7 +19,7 @@ export const MatchSetupWizard = ({ onComplete, onBack }) => {
           <div className="grid gap-4">
             <button onClick={() => handleMainSelect('Seçimli Maç')} className="p-6 rounded-3xl bg-indigo-600 text-white font-bold text-xl">🎮 Seçimli Maç</button>
             <button onClick={() => handleMainSelect('Normal Maç')} className="p-6 rounded-3xl bg-black text-white font-bold text-xl">⚽ Normal Maç</button>
-            <button onClick={onBack} className="mt-2 text-gray-400 font-bold underline text-sm">Vazgeç ve Geri Dön</button>
+            <button onClick={() => navigate('/team/create?step=4')} className="mt-2 text-gray-400 font-bold underline text-sm">Vazgeç ve Geri Dön</button>
           </div>
         </div>
       ) : (
@@ -23,9 +30,9 @@ export const MatchSetupWizard = ({ onComplete, onBack }) => {
           </div>
           <div className="grid gap-3">
             {modes[selectedMain].map((m) => (
-              <button key={m} onClick={() => { handleSubSelect(m); onComplete(); }} className="p-4 rounded-2xl bg-gray-50 border border-gray-100 font-bold text-gray-700 hover:bg-indigo-50 hover:border-indigo-200 transition-all text-left">{m}</button>
+              <button key={m} onClick={() => { handleSubSelect(m); handleComplete (); }} className="p-4 rounded-2xl bg-gray-50 border border-gray-100 font-bold text-gray-700 hover:bg-indigo-50 hover:border-indigo-200 transition-all text-left">{m}</button>
             ))}
-            <button onClick={() => { handleSubSelect('Random Seç'); onComplete(); }} className="p-4 rounded-2xl bg-orange-50 border-2 border-dashed border-orange-200 text-orange-600 font-black">🎲 RANDOM SEÇ</button>
+            <button onClick={() => { handleSubSelect('Random Seç'); handleComplete (); }} className="p-4 rounded-2xl bg-orange-50 border-2 border-dashed border-orange-200 text-orange-600 font-black">🎲 RANDOM SEÇ</button>
           </div>
         </div>
       )}

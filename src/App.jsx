@@ -5,6 +5,8 @@ import { MatchSetupWizard } from './features/match-setup/MatchSetupWizard';
 import { GameConfigWizard } from './features/game-config/GameConfigWizard';
 import { LiveArena } from './pages/LiveArena';
 import { PAGES } from './constants/gameSettings';
+import { AppRouter } from './routes/AppRouter';
+
 
 function AppContent() {
   const [currentPage, setCurrentPage] = useState(PAGES.TEAMS_INIT);
@@ -68,8 +70,8 @@ function AppContent() {
 // Uygulamanın en dış sarmalayıcısı
 export default function App() {
   return (
-    <GameProvider>
-      <AppContent />
+    <GameProvider basename="/team-match-app">
+       <AppRouter />
     </GameProvider>
   );
 }
