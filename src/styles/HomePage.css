@@ -1,0 +1,30 @@
+/* HomePage stillerini styles klasörüne taşıdık */
+.home-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 2rem 2.5rem;
+  text-align: left;
+}
+.home-container h1 {
+  color: #ff5252;
+  margin-bottom: 1rem;
+}
+.home-container h2 {
+  color: #222;
+  margin-top: 2rem;
+}
+.home-container ul {
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+}
+.home-container li {
+  margin-bottom: 0.7rem;
+  font-size: 1.1rem;
+}
+.home-container p {
+  font-size: 1.15rem;
+  color: #444;
+}

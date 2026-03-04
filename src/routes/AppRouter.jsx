@@ -8,6 +8,8 @@ import { MatchSetupWizard } from '../features/match-setup/MatchSetupWizard';
 import { GameConfigWizard } from '../features/game-config/GameConfigWizard';
 import { LiveArena } from '../pages/LiveArena';
 import { useSearchParams } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import HomePage from '../pages/HomePage';
 
 export const AppRouter = () => {
             const HomeRedirect = () => {
@@ -20,6 +22,7 @@ export const AppRouter = () => {
         };
   return (
     <HashRouter>
+      <Navbar />
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
             <Routes>
             {/* 
@@ -47,8 +50,8 @@ export const AppRouter = () => {
             {/* 
                 ANA YÖNLENDİRMELER
             */}
-            {/* Site ana dizinine girilirse direkt /team/create?step=1 */}
-            <Route path="/" element={<HomeRedirect />} /> 
+            {/* Site ana dizinine girilirse HomePage componenti */}
+            <Route path="/" element={<HomePage />} /> 
 
             {/* 
                 404 DURUMU: 

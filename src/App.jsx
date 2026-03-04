@@ -7,7 +7,6 @@ import { LiveArena } from './pages/LiveArena';
 import { PAGES } from './constants/gameSettings';
 import { AppRouter } from './routes/AppRouter';
 
-
 function AppContent() {
   const [currentPage, setCurrentPage] = useState(PAGES.TEAMS_INIT);
   const { saveTeams, saveConfig } = useGame();
@@ -58,12 +57,13 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 flex flex-col items-center justify-center p-4">
-      {/* Sadece ilgili sayfayı render eder */}
-      {renderPage()}
-      
-      {/* İleride buraya sabit bir Footer veya Navbar da ekleyebilirsin */}
-    </div>
+    <>
+      <div className="min-h-screen bg-gray-50 py-10 flex flex-col items-center justify-center p-4">
+        {/* Sadece ilgili sayfayı render eder */}
+        {renderPage()}
+        {/* İleride buraya sabit bir Footer veya Navbar da ekleyebilirsin */}
+      </div>
+    </>
   );
 }
 
@@ -71,7 +71,7 @@ function AppContent() {
 export default function App() {
   return (
     <GameProvider basename="/team-match-app">
-       <AppRouter />
+      <AppRouter />
     </GameProvider>
   );
 }
