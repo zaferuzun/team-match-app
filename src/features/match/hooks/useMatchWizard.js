@@ -8,7 +8,7 @@ export const useMatchWizard = () => {
   const { gameState, saveTeams, updateTempData, resetAll,setGlobalPlayerCount } = useGame();
 
   // URL'de step varsa onu al, yoksa 1 kabul et
-  const initialStep = Number(searchParams.get('step')) || 1;
+  const initialStep = Number(searchParams.get('step'));
 
   const [step, setStep] = useState(initialStep);
   const [playerCount, setPlayerCount] = useState(2);

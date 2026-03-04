@@ -14,11 +14,16 @@ export const Step3InputForm = ({ method, playerCount, onBack, onConfirmRandom, o
 
   // 2. ADIM: 4 Kişi seçildiğinde 2-2 ayarı (Sadece ilk girişte)
   useEffect(() => {
-    setNames(tempData.randomNames);
-    setRed(tempData.readyNames.red);
-    setBlue(tempData.readyNames.blue);
-  }, [playerCount, tempData.randomNames, tempData.readyNames]);
-
+    // Eğer yerel state boş ama Context doluysa (yenileme sonrası durumu)
+    if (names.every(n => n === "") && tempData.randomNames.some(n => n !== "")) {
+      setNames(tempData.randomNames);
+    }
+    if (red.every(n => n === "") && tempData.readyNames.red.some(n => n !== "")) {
+      setRed(tempData.readyNames.red);
+      setBlue(tempData.readyNames.blue);
+    }
+  }, [tempData]);
+  
   // --- RANDOM MODU İŞLEMLERİ ---
   const handleRandomChange = (index, val) => {
     const next = [...names];

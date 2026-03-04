@@ -24,16 +24,17 @@ const initialState = {
 };
 
 export const GameProvider = ({ children }) => {
-  // 1. ADIM: Başlangıçta LocalStorage kontrolü (Lazy Initializer)
   const [gameState, setGameState] = useState(() => {
-    try {
-      const savedData = localStorage.getItem('match_arena_v2');
-      // Eğer veri varsa Parse et, yoksa initialState kullan
-      return savedData ? JSON.parse(savedData) : initialState;
-    } catch (error) {
-      console.error("LocalStorage okunurken hata oluştu:", error);
-      return initialState;
+    // 1. Önemli: Anahtarın 'match_arena_v2' olduğundan emin ol
+    const saved = localStorage.getItem('match_arena');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("JSON Parse Hatası", e);
+      }
     }
+    return initialState; // Veri yoksa veya hata varsa başlangıç durumuna dön
   });
 
 const setGlobalPlayerCount = (count) => {
