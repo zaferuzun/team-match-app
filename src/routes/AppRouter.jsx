@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
-
+import { HashRouter } from 'react-router-dom';
 // Sayfalar ve Feature'lar
 import { MatchWizard } from '../features/match/MatchWizard';
 import { MatchSetupWizard } from '../features/match-setup/MatchSetupWizard';
@@ -19,7 +19,7 @@ export const AppRouter = () => {
             return <Navigate to="/team/create?step=1" replace />;
         };
   return (
-    <BrowserRouter basename="/team-match-app">
+    <HashRouter basename="/team-match-app">
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
             <Routes>
             {/* 
@@ -59,7 +59,7 @@ export const AppRouter = () => {
 
             </Routes>
         </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 
 
