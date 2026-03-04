@@ -19,7 +19,7 @@ export const AppRouter = () => {
             return <Navigate to="/team/create?step=1" replace />;
         };
   return (
-    <HashRouter basename="/team-match-app">
+    <HashRouter>
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
             <Routes>
             {/* 

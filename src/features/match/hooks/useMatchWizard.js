@@ -58,7 +58,7 @@ export const useMatchWizard = () => {
   
     const handlePlayerCountSelect = (count) => {
     setGlobalPlayerCount(count); // Hafızaya kaydet
-    setStep(2); // İleri git
+    nextStep(); // İleri git
   };
   return {
     step, playerCount, setPlayerCount,
